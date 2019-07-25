@@ -6,6 +6,8 @@ import pigpio
 # import serial
 # import smbus
 
+from time import sleep
+
 from models.base import Singleton
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
@@ -18,8 +20,9 @@ R_IN1 = 20
 L_STEP = 23
 L_IN1 = 27
 # L_IN2 = 16
-frequency = 200
+frequency = 1000
 maxPwm = 100
+preCode = ''
 
 
 class CarManager(metaclass=Singleton):
@@ -45,7 +48,7 @@ class CarManager(metaclass=Singleton):
 
   def send_command(self, command):
       # logger.info({'action': 'send_command', 'command': command})
-      code = 's'
+      code = ''
       r_pwm = 0
       l_pwm = 0
       
@@ -109,12 +112,17 @@ class CarManager(metaclass=Singleton):
           
           #print('s')
 
+
+      if self.preCode == code:
+          return
       self.pi.write(R_IN1, r_in1)
       # self.pi.write(R_IN2, r_in2)
       self.pi.write(L_IN1, l_in1)
       # self.pi.write(L_IN2, l_in2)
       self.pi.set_PWM_dutycycle(R_STEP, r_pwm)
       self.pi.set_PWM_dutycycle(L_STEP, l_pwm)
+      self.preCode = code
+
       #850center750right950left
       # self.pi.set_servo_pulsewidth(STEERING, self.s_PWM)
       # self.bus.write_byte(self.address, ord(code))
