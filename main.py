@@ -49,9 +49,9 @@ def getFrames():
                     break
                 cv2.circle(frame, (i[0], i[1]), i[2], (0,0,255), 2)
                 print('x:{},y:{},r:{}'.format(i[0], i[1], i[2]))
-                if i[2] < 10:
+                if i[2] < 18:
                     carManager.forward()
-                elif i[2] > 25:
+                elif i[2] > 23:
                     carManager.back()
                 elif i[0] > 280:
                     carManager.left()
@@ -106,5 +106,5 @@ def video_feed():
 # import webbrowser
 # webbrowser.get().open("192.168.0.101:5001")
 if __name__ == '__main__':
-    app.run(host = '192.168.0.103', port = 5001, threaded = False) # only 1 client
-    #app.run(host='192.168.0.101', port=5001, threaded=False)  # only
+    # app.run(host = '192.168.0.103', port = 5001, threaded = False) # only 1 client
+    app.run(host='192.168.0.101', port=5001, threaded=False)  # only
